@@ -133,3 +133,27 @@ function showProductsInCart(listofproducts){
         cart_items.appendChild(cart_item)
     })
 }
+
+const parentNode = document.getElementById('music-content');
+window.addEventListener('load', () => {
+    console.log('loaded');
+
+    axios.get('http://localhost:3000/products').then((products) => {
+        console.log(products)
+        products.data.forEach(product => {
+            const productHtml = `
+                <div id="album-${product.id}">
+                    <h3>${product.title}</h3>
+                    <div class="image-container">
+                        <img class="prod-images" src=${product.imageUrl} alt="">
+                    </div>
+                                    <div class="prod-details">
+                        <span>$<span>${product.price}</span></span>
+                        <button class="shop-item-button" type='button'>ADD TO CART</button>
+                    </div>
+                </div>`
+            parentNode.innerHTML += productHtml
+
+        })
+    }) 
+})
