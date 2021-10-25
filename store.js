@@ -101,3 +101,35 @@ function updateCartTotal() {
     total = Math.round(total * 100) / 100
     document.getElementsByClassName('cart-total-price')[0].innerText = '$' + total
 }
+
+document.addEventListener('click', event=>{
+    if(event.target.className==cart-holder){
+        showProductsInCart(carProducts.data);
+        document.querySelector('#cart').style = "display:block;"
+    }
+})
+
+function showProductsInCart(listofproducts){
+    cart_items.innerHTML = "";
+    listofproducts.forEach(product => {
+        const id = `album-${product.id}`;
+        const name = document.querySelector(`#${id} h3`).innerText;
+        const img_src = document.querySelector(`#${id} img`).src;
+        const price = product.price;
+        document.querySelector('.cart-number').innerText = parseInt(document.querySelector('.cart-number').innerText)+1
+        const cart_item = document.createElement('div');
+        cart_item.classList.add('cart-row');
+        cart_item.setAttribute('id',`in-cart-${id}`);
+        cart_item.innerHTML = `
+        <span class='cart-item cart-column'>
+        <img class='cart-img' src="${img_src}" alt="">
+            <span>${name}</span>
+        </span>
+        <span class='cart-price cart-column'>${price}</span>
+        <form onsubmit='deleteCartItem(event, ${product.id})' class='cart-quantity cart-column'>
+            <input type="text" value="1">
+            <button>REMOVE</button>
+        </form>`
+        cart_items.appendChild(cart_item)
+    })
+}
