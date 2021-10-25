@@ -149,7 +149,7 @@ window.addEventListener('load', () => {
                     </div>
                                     <div class="prod-details">
                         <span>$<span>${product.price}</span></span>
-                        <button class="shop-item-button" type='button'>ADD TO CART</button>
+                        <button class="shop-item-button" type='button' onClick=addToCart(${product.id})>ADD TO CART</button>
                     </div>
                 </div>`
             parentNode.innerHTML += productHtml
@@ -157,3 +157,23 @@ window.addEventListener('load', () => {
         })
     }) 
 })
+
+function showNotification(message){
+    const container = document.getElementById('container');
+    const notification = document.createElement('div');
+    notification.classList.add('notification');
+    notification.innerHTML = `<h4>${message}<h4>`;
+    container.appendChild(notification);
+    setTimeout(()=>{
+        notification.remove();
+    },2500)
+}
+function addToCart(prodId){
+    axios.post('http://localhost:3000/cart', {productId:prodId})
+     .then(responce=>{
+         if(response.status == 200){
+             notifyUser(response.data,message)
+         }
+     })
+     .catch(err=>console.log(err))
+}
