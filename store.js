@@ -155,7 +155,8 @@ window.addEventListener('load', () => {
             parentNode.innerHTML += productHtml
 
         })
-    }) 
+    })
+    axios.get('http://localhost:3000/cart').then(response=>showProductsInCart(response.data)).catch(err) 
 })
 
 function showNotification(message){
@@ -176,4 +177,14 @@ function addToCart(prodId){
          }
      })
      .catch(err=>console.log(err))
+}
+
+function deleteCartItem(e, prodId){
+    e.preventDefault();
+    axios.post('http://localhost:3000/cart-delete-item', {productId: prodId})
+        .then(() => removeElementFromCartDom(prodId))
+}
+function removeElementFromCartDom(prodId){
+    document.getElementById(`in-cart-album-${prodId}`).remove();
+    showNotification('Succesfuly removed product')
 }
